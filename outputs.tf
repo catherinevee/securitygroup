@@ -1,20 +1,20 @@
-output "security_group_ids" {
-  description = "List of security group IDs"
-  value       = [for sg in aws_security_group.this : sg.id]
-}
-
 output "security_group_arns" {
-  description = "List of security group ARNs"
+  description = "List of security group ARNs. Useful for IAM policies and cross-account access."
   value       = [for sg in aws_security_group.this : sg.arn]
 }
 
+output "security_group_ids" {
+  description = "List of security group IDs. Use these to reference security groups in other resources."
+  value       = [for sg in aws_security_group.this : sg.id]
+}
+
 output "security_group_names" {
-  description = "List of security group names"
+  description = "List of security group names. Useful for human-readable identification."
   value       = [for sg in aws_security_group.this : sg.name]
 }
 
 output "security_groups" {
-  description = "Map of security group objects"
+  description = "Map of security group objects with comprehensive attributes including ID, ARN, name, description, VPC ID, and tags."
   value = {
     for name, sg in aws_security_group.this : name => {
       id          = sg.id
@@ -28,7 +28,7 @@ output "security_groups" {
 }
 
 output "security_group_rules" {
-  description = "Map of security group rules"
+  description = "Map of security group rules organized by type (ingress/egress) with detailed rule attributes for monitoring and compliance."
   value = {
     ingress = {
       for rule in aws_security_group_rule.ingress : rule.id => {

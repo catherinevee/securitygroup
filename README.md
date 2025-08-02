@@ -11,6 +11,14 @@ This Terraform module creates AWS security groups with configurable ingress and 
 - **Name Prefix Support**: Option to use name prefixes for better resource management
 - **Separate Rule Resources**: Security group rules as separate resources for better management
 
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group_rule.ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+
 ## Usage
 
 ### Basic Example
@@ -202,14 +210,16 @@ See the `examples/` directory for complete working examples:
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.0 |
-| aws | >= 5.0 |
+| terraform | >= 1.13.0, < 2.0.0 |
+| aws | >= 6.2.0, < 7.0.0 |
+| azurerm | >= 4.38.1, < 5.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 5.0 |
+| aws | >= 6.2.0, < 7.0.0 |
+| azurerm | >= 4.38.1, < 5.0.0 |
 
 ## Best Practices
 

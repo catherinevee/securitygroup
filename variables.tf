@@ -46,9 +46,23 @@ variable "security_groups" {
 
   validation {
     condition = alltrue([
-      for sg in var.security_groups : can(regex("^sg-", sg.vpc_id)) || can(regex("^vpc-", sg.vpc_id))
+      for sg in var.security_groups : can(regex("^vpc-", sg.vpc_id))
     ])
-    error_message = "VPC ID must be a valid VPC ID or security group ID."
+    error_message = "VPC ID must be a valid VPC ID starting with 'vpc-'."
+  }
+
+  validation {
+    condition = alltrue([
+      for sg in var.security_groups : length(sg.name) <= 255
+    ])
+    error_message = "Security group name must be 255 characters or less."
+  }
+
+  validation {
+    condition = alltrue([
+      for sg in var.security_groups : can(regex("^[a-zA-Z0-9._-]+$", sg.name))
+    ])
+    error_message = "Security group name can only contain alphanumeric characters, dots, underscores, and hyphens."
   }
 }
 
@@ -64,14 +78,4 @@ variable "tags" {
   default     = {}
 }
 
-variable "create_security_group" {
-  description = "Whether to create security group"
-  type        = bool
-  default     = true
-}
-
-variable "create_security_group_rules" {
-  description = "Whether to create security group rules as separate resources"
-  type        = bool
-  default     = true
-} 
+# Removed unused variables - these were defined but never implemented in the module 

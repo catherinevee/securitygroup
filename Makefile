@@ -45,10 +45,20 @@ clean:
 	rm -f terraform.tfstate
 	rm -f terraform.tfstate.backup
 
-# Run tests (placeholder for future test implementation)
+# Run tests
 test:
-	@echo "Running tests..."
-	@echo "Tests not implemented yet"
+	@echo "Running Terraform tests..."
+	@if [ -f "test/main.tf" ]; then \
+		cd test && terraform init && terraform plan; \
+	else \
+		echo "No test configuration found"; \
+	fi
+
+# Run integration tests
+test-integration:
+	@echo "Running integration tests..."
+	@cd examples/basic && terraform init && terraform plan
+	@cd examples/advanced && terraform init && terraform plan
 
 # Check for security issues
 security-check:
@@ -57,6 +67,16 @@ security-check:
 		tflint; \
 	else \
 		echo "tflint not installed. Install with: go install github.com/terraform-linters/tflint/cmd/tflint@latest"; \
+	fi
+	@if command -v tfsec >/dev/null 2>&1; then \
+		tfsec .; \
+	else \
+		echo "tfsec not installed. Install with: go install github.com/aquasecurity/tfsec/cmd/tfsec@latest"; \
+	fi
+	@if command -v checkov >/dev/null 2>&1; then \
+		checkov -d .; \
+	else \
+		echo "checkov not installed. Install with: pip install checkov"; \
 	fi
 
 # Run all checks

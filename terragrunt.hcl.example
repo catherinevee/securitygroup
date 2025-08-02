@@ -1,0 +1,60 @@
+# Terragrunt configuration example for AWS Security Group Module
+# Compatible with Terragrunt version 0.84.0
+
+include "root" {
+  path = find_in_parent_folders()
+}
+
+terraform {
+  source = "git::https://github.com/your-org/terraform-aws-securitygroup.git//?ref=v1.0.0"
+}
+
+inputs = {
+  security_groups = [
+    {
+      name        = "web-sg"
+      description = "Security group for web servers"
+      vpc_id      = "vpc-12345678"
+      
+      ingress_rules = [
+        {
+          description = "HTTP access"
+          from_port   = 80
+          to_port     = 80
+          protocol    = "tcp"
+          cidr_blocks = ["0.0.0.0/0"]
+        },
+        {
+          description = "HTTPS access"
+          from_port   = 443
+          to_port     = 443
+          protocol    = "tcp"
+          cidr_blocks = ["0.0.0.0/0"]
+        }
+      ]
+      
+      egress_rules = [
+        {
+          description = "All outbound traffic"
+          from_port   = 0
+          to_port     = 0
+          protocol    = "-1"
+          cidr_blocks = ["0.0.0.0/0"]
+        }
+      ]
+      
+      tags = {
+        Environment = "production"
+        Service     = "web"
+      }
+    }
+  ]
+
+  use_name_prefix = false
+  
+  tags = {
+    Project     = "my-project"
+    ManagedBy   = "terragrunt"
+    Environment = "production"
+  }
+} 

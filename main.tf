@@ -108,6 +108,10 @@ resource "aws_security_group_rule" "ingress" {
   self             = lookup(each.value, "self", null)
 
   depends_on = [aws_security_group.this]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -129,4 +133,8 @@ resource "aws_security_group_rule" "egress" {
   self             = lookup(each.value, "self", null)
 
   depends_on = [aws_security_group.this]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 } 
